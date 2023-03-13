@@ -1,10 +1,28 @@
-import { XMarkIcon } from "@heroicons/react/24/solid";
+import {
+	PaperAirplaneIcon,
+	PaperClipIcon,
+	XMarkIcon,
+} from "@heroicons/react/24/solid";
 import React, { useState } from "react";
+import { ChatObject, MessageFormProps } from "react-chat-engine-advanced";
+import Dropzone from "react-dropzone";
 
-const StandardMessageForm = () => {
+type StandardMessageFormProps = {
+	props: MessageFormProps;
+	activeChat: ChatObject | undefined;
+};
+const StandardMessageForm = ({
+	props,
+	activeChat,
+}: StandardMessageFormProps) => {
+	console.log("🚀 ~  props:", props);
+	console.log("🚀activeChat:", activeChat);
+
 	const [message, setMessage] = useState("");
-	const [attachment, setAttachment] = useState("");
+	const [attachment, setAttachment] = useState<File>();
 	const [preview, setPreview] = useState("");
+
+	const handleSubmit = async () => {};
 
 	return (
 		<div className="message-form-container">
@@ -20,7 +38,7 @@ const StandardMessageForm = () => {
 						className="message-form-icon-x"
 						onClick={() => {
 							setPreview("");
-							setAttachment("");
+							setAttachment(undefined);
 						}}
 					/>
 				</div>
@@ -33,6 +51,33 @@ const StandardMessageForm = () => {
 						value={message}
 						onChange={(e) => setMessage(e.target.value)}
 						placeholder="Send a message..."
+					/>
+				</div>
+				<div className="message-form-icons">
+					<Dropzone
+						multiple={false}
+						noClick={true}
+						onDrop={(acceptedFiles) => {
+							setAttachment(acceptedFiles[0]);
+							setPreview(URL.createObjectURL(acceptedFiles[0]));
+						}}
+					>
+						{({ getRootProps, getInputProps, open }) => (
+							<div {...getRootProps()}>
+								<input {...getInputProps()} />
+								<PaperClipIcon
+									className="message-form-icon-clip"
+									onClick={open}
+								/>
+							</div>
+						)}
+					</Dropzone>
+					<hr className="vertical-line" />
+					<PaperAirplaneIcon
+						className="message-form-icon-airplane"
+						onClick={() => {
+							setPreview("");
+						}}
 					/>
 				</div>
 			</div>
