@@ -3,7 +3,7 @@ import {
 	PaperClipIcon,
 	XMarkIcon,
 } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ChatObject, MessageFormProps } from "react-chat-engine-advanced";
 import Dropzone from "react-dropzone";
 
@@ -15,14 +15,37 @@ const StandardMessageForm = ({
 	props,
 	activeChat,
 }: StandardMessageFormProps) => {
-	console.log("🚀 ~  props:", props);
-	console.log("🚀activeChat:", activeChat);
-
 	const [message, setMessage] = useState("");
 	const [attachment, setAttachment] = useState<File>();
 	const [preview, setPreview] = useState("");
 
-	const handleSubmit = async () => {};
+	const handleSubmit = async () => {
+		const date = new Date()
+			.toISOString()
+			.replace("T", " ")
+			.replace("Z", `${Math.floor(Math.random() * 1000)}+00:00`);
+		const at = attachment
+			? [
+					{
+						id: activeChat!.id,
+						blob: attachment,
+						file: attachment.name,
+						created: attachment.name,
+					},
+			  ]
+			: [];
+		const form = {
+			attachments: at,
+			created: date,
+			sender_username: props.username as string,
+			text: message,
+			activeChatId: activeChat?.id,
+			custom_json: {},
+		};
+		props.onSubmit?.(form);
+		setMessage("");
+		setAttachment(undefined);
+	};
 
 	return (
 		<div className="message-form-container">
@@ -77,6 +100,7 @@ const StandardMessageForm = ({
 						className="message-form-icon-airplane"
 						onClick={() => {
 							setPreview("");
+							handleSubmit();
 						}}
 					/>
 				</div>
