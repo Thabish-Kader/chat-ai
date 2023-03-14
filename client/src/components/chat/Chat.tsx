@@ -6,6 +6,7 @@ import {
 import CustomHeader from "./CustomHeader";
 import StandardMessageForm from "../CustomMessageForm/StandardMessageForm";
 import Ai from "../CustomMessageForm/Ai";
+import AiCode from "../CustomMessageForm/AiCode";
 
 const Chat = () => {
 	const chatProps = useMultiChatLogic(
@@ -21,8 +22,13 @@ const Chat = () => {
 				style={{ height: "100vh" }}
 				renderChatHeader={(chat) => <CustomHeader props={chat} />}
 				renderMessageForm={(props) => {
-					if (chatProps.chat?.title.startsWith("Ai")) {
+					if (chatProps.chat?.title.startsWith("AIChat")) {
 						return <Ai props={props} activeChat={chatProps.chat} />;
+					}
+					if (chatProps.chat?.title.startsWith("AICode")) {
+						return (
+							<AiCode props={props} activeChat={chatProps.chat} />
+						);
 					}
 					return (
 						<StandardMessageForm
