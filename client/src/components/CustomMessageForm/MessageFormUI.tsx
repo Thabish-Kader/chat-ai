@@ -11,6 +11,8 @@ type MessageFormUIProps = {
 	message: string;
 	handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	handleSubmit: () => Promise<void>;
+	appendText?: string;
+	handleKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 const MessageFormUI = ({
@@ -18,6 +20,8 @@ const MessageFormUI = ({
 	message,
 	handleChange,
 	handleSubmit,
+	appendText,
+	handleKeyDown,
 }: MessageFormUIProps) => {
 	const [preview, setPreview] = useState("");
 	return (
@@ -46,8 +50,17 @@ const MessageFormUI = ({
 						className="message-form-input"
 						value={message}
 						onChange={handleChange}
+						onKeyDown={handleKeyDown}
 						placeholder="Send a message..."
 					/>
+					{appendText && (
+						<input
+							type="text"
+							className="message-form-assist"
+							disabled
+							value={`${message} ${appendText}`}
+						/>
+					)}
 				</div>
 				<div className="message-form-icons">
 					<Dropzone

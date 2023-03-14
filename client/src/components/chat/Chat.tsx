@@ -7,12 +7,19 @@ import CustomHeader from "./CustomHeader";
 import StandardMessageForm from "../CustomMessageForm/StandardMessageForm";
 import Ai from "../CustomMessageForm/Ai";
 import AiCode from "../CustomMessageForm/AiCode";
+import AiAssist from "../CustomMessageForm/AiAssist";
 
-const Chat = () => {
+const Chat = ({
+	user,
+	secret,
+}: {
+	user: string | null;
+	secret: string | null;
+}) => {
 	const chatProps = useMultiChatLogic(
 		import.meta.env.VITE_PROJECT_ID,
-		"testuser",
-		"1234"
+		user!,
+		secret!
 	);
 	return (
 		<div style={{ flexBasis: "100%" }}>
@@ -28,6 +35,14 @@ const Chat = () => {
 					if (chatProps.chat?.title.startsWith("AICode")) {
 						return (
 							<AiCode props={props} activeChat={chatProps.chat} />
+						);
+					}
+					if (chatProps.chat?.title.startsWith("AIAssist")) {
+						return (
+							<AiAssist
+								props={props}
+								activeChat={chatProps.chat}
+							/>
 						);
 					}
 					return (
