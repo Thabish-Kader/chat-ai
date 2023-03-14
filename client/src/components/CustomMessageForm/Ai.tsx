@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { ChatObject, MessageFormProps } from "react-chat-engine-advanced";
 import MessageFormUI from "./MessageFormUI";
+import { ChatObject, MessageFormProps } from "react-chat-engine-advanced";
+import { usePostAiTextMutation } from "@/state/api";
 
-type StandardMessageFormProps = {
+type AiProps = {
 	props: MessageFormProps;
 	activeChat: ChatObject | undefined;
 };
-const StandardMessageForm = ({
-	props,
-	activeChat,
-}: StandardMessageFormProps) => {
+
+const Ai = ({ props, activeChat }: AiProps) => {
 	const [message, setMessage] = useState("");
 	const [attachment, setAttachment] = useState<File>();
+	const [trigger] = usePostAiTextMutation();
 
 	const handleSubmit = async () => {
 		const date = new Date()
@@ -37,13 +37,13 @@ const StandardMessageForm = ({
 			custom_json: {},
 		};
 		props.onSubmit?.(form);
+		trigger(form);
 		setMessage("");
 		setAttachment(undefined);
 	};
-	console.log(activeChat?.id);
+
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
 		setMessage(e.target.value);
-
 	return (
 		<MessageFormUI
 			setAttachment={setAttachment}
@@ -54,4 +54,4 @@ const StandardMessageForm = ({
 	);
 };
 
-export default StandardMessageForm;
+export default Ai;
