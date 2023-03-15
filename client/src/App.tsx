@@ -4,8 +4,8 @@ import { useState } from "react";
 import Login from "./components/Login";
 
 function App() {
-	const [user, setUser] = useState(null);
-	const [secret, setSecret] = useState(null);
+	const [user, setUser] = useState<string>("");
+	const [secret, setSecret] = useState<string>("");
 	const isAuth = Boolean(user) && Boolean(secret);
 
 	return (
