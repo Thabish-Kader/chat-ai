@@ -37,9 +37,9 @@ router.post("/text", async (req, res) => {
 			{ text: response.data.choices[0].text },
 			{
 				headers: {
-					"Project-ID": "14713b11-5e30-436e-85d5-046c013e98ab",
-					"User-Name": "AI_bot",
-					"User-Secret": "1234",
+					"Project-ID": process.env.PROJECT_ID,
+					"User-Name": process.env.BOT_USER_NAME,
+					"User-Secret": process.env.BOT_USER_SECRET,
 				},
 			}
 		);
